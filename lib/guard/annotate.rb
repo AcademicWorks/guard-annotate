@@ -9,7 +9,8 @@ module Guard
     
     def initialize( watchers=[], options={} )
       super
-      
+      options[:run_on_start] = false if options[:run_on_start].nil?
+      options[:run_on_reload] = false if options[:run_on_reload].nil?
       options[:notify] = true if options[:notify].nil?
       options[:position] = 'before' if options[:position].nil?
       options[:tests] = false if options[:tests].nil?
@@ -17,7 +18,7 @@ module Guard
     end
 
     def start
-      run_annotate
+      options[:run_on_start] ? run_annotate : true
     end
 
     def stop
@@ -25,7 +26,7 @@ module Guard
     end
 
     def reload
-      run_annotate
+      options[:run_on_reload] ? run_annotate : true
     end
 
     def run_all
@@ -33,7 +34,7 @@ module Guard
     end
 
     def run_on_change( paths=[] )
-      run_annotate
+      run_annotate 
     end
     
     private
